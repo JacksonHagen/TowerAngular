@@ -1,17 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MySqlConnector;
 using Tower.Repositories;
@@ -42,6 +35,12 @@ namespace Tower
 
 			services.AddScoped<AccountsRepository>();
 			services.AddScoped<AccountService>();
+			services.AddScoped<TowerEventsRepository>();
+			services.AddScoped<TowerEventsService>();
+			services.AddScoped<TicketsRepository>();
+			services.AddScoped<TicketsService>();
+			services.AddScoped<CommentsRepository>();
+			services.AddScoped<CommentsService>();
 		}
 
 		private void ConfigureCors(IServiceCollection services)
@@ -50,14 +49,14 @@ namespace Tower
 			{
 				options.AddPolicy("CorsDevPolicy", builder =>
 							{
-						builder
-									.AllowAnyMethod()
-									.AllowAnyHeader()
-									.AllowCredentials()
-									.WithOrigins(new string[]{
+								builder
+											.AllowAnyMethod()
+											.AllowAnyHeader()
+											.AllowCredentials()
+											.WithOrigins(new string[]{
 												"http://localhost:8080", "http://localhost:8081"
+									});
 							});
-					});
 			});
 		}
 
