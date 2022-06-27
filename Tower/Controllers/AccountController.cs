@@ -14,10 +14,12 @@ namespace Tower.Controllers
 	public class AccountController : ControllerBase
 	{
 		private readonly AccountService _accountService;
+		private readonly TicketsService _ts;
 
-		public AccountController(AccountService accountService)
+		public AccountController(AccountService accountService, TicketsService ts)
 		{
 			_accountService = accountService;
+			_ts = ts;
 		}
 
 		[HttpGet]
@@ -30,6 +32,20 @@ namespace Tower.Controllers
 				return Ok(_accountService.GetOrCreateProfile(userInfo));
 			}
 			catch (Exception e)
+			{
+				return BadRequest(e.Message);
+			}
+		}
+		[HttpGet("tickets")]
+		[Authorize]
+		public async Task<ActionResult<List<Ticket>>> GetTicketsByAccount() {
+			try
+			{
+				Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+				List<Ticket> tickets = _ts.GetTicketsByAccount(userInfo.Id);
+				return Ok(tickets);
+			}
+			catch(Exception e)
 			{
 				return BadRequest(e.Message);
 			}

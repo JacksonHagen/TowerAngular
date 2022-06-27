@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS towerevents(
     id INT NOT NULL AUTO_INCREMENT primary key,
     creatorId VARCHAR(255) NOT NULL,
     name VARCHAR(255),
+    description TEXT,
     coverImg VARCHAR(255),
     location VARCHAR(255),
     capacity INT,
